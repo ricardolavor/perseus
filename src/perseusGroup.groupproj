@@ -1,0 +1,48 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{C20F6CB5-4545-4FD7-80C9-B18E45277F2D}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="perseusLib.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Test\perseusTests.dproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="perseusLib">
+			<MSBuild Projects="perseusLib.dproj"/>
+		</Target>
+		<Target Name="perseusLib:Clean">
+			<MSBuild Projects="perseusLib.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="perseusLib:Make">
+			<MSBuild Projects="perseusLib.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="perseusTests">
+			<MSBuild Projects="Test\perseusTests.dproj"/>
+		</Target>
+		<Target Name="perseusTests:Clean">
+			<MSBuild Projects="Test\perseusTests.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="perseusTests:Make">
+			<MSBuild Projects="Test\perseusTests.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="perseusLib;perseusTests"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="perseusLib:Clean;perseusTests:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="perseusLib:Make;perseusTests:Make"/>
+		</Target>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
+	</Project>

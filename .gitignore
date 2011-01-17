@@ -1,0 +1,9 @@
+src/*.dcu
+src/Debug
+src/__history
+src/Test/*.dcu
+src/Test/Debug
+src/Test/__history
+src/Demo/*.dcu
+src/Demo/Debug
+src/Demo/__history

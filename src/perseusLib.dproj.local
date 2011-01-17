@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2010/10/17 15:38:12.000.754,=rtl.dcp</Transaction>
+    <Transaction>2010/10/17 15:40:05.000.775,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\perseus.dproj=C:\Users\Ricardo\Documents\RAD Studio\Projects\Package1.dproj</Transaction>
+    <Transaction>2010/10/17 15:45:08.000.647,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\perseusLib.dproj=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\perseus.dproj</Transaction>
+    <Transaction>2010/10/17 15:50:18.000.227,=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas</Transaction>
+    <Transaction>2010/10/17 15:50:48.000.996,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\AMFIO.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas</Transaction>
+    <Transaction>2010/11/15 17:58:07.000.391,=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas</Transaction>
+    <Transaction>2010/11/15 17:58:29.000.842,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\AMFHeader.pas</Transaction>
+    <Transaction>2010/11/15 17:58:34.000.022,=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas</Transaction>
+    <Transaction>2010/11/15 17:58:40.000.762,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\AMFBody.pas</Transaction>
+    <Transaction>2010/11/15 17:58:46.000.235,=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas</Transaction>
+    <Transaction>2010/11/15 17:59:05.000.039,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\AMFMessage.pas</Transaction>
+    <Transaction>2010/11/15 22:31:50.000.797,=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas</Transaction>
+    <Transaction>2010/11/15 22:32:15.000.942,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\ActionScriptObject.pas</Transaction>
+    <Transaction>2010/11/15 22:32:27.000.134,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\ActionScriptObject.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\ActionScriptClasses.pas</Transaction>
+    <Transaction>2010/11/15 22:35:39.000.062,=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas</Transaction>
+    <Transaction>2010/11/15 22:35:49.000.505,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\CommonTypes.pas</Transaction>
+    <Transaction>2010/11/15 22:42:07.000.103,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\CommonTypes.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PerseusCommonTypes.pas</Transaction>
+    <Transaction>2010/11/15 22:42:55.000.200,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\ActionScriptClasses.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PSActionScriptClasses.pas</Transaction>
+    <Transaction>2010/11/15 22:42:58.000.300,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\AMFBody.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PSAMFBody.pas</Transaction>
+    <Transaction>2010/11/15 22:43:01.000.728,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\AMFHeader.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PSAMFHeader.pas</Transaction>
+    <Transaction>2010/11/15 22:43:04.000.438,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\AMFIO.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PSAMFIO.pas</Transaction>
+    <Transaction>2010/11/15 22:43:07.000.608,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\AMFMessage.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PSAMFMessage.pas</Transaction>
+    <Transaction>2010/11/15 22:43:16.000.671,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PerseusCommonTypes.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PSCommonTypes.pas</Transaction>
+    <Transaction>2010/11/15 23:21:21.000.829,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PSActionScriptClasses.pas=</Transaction>
+    <Transaction>2010/11/27 16:53:02.000.638,=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas</Transaction>
+    <Transaction>2010/11/27 16:53:19.000.041,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PSClassDefinition.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas</Transaction>
+    <Transaction>2010/11/27 23:17:04.000.317,=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas</Transaction>
+    <Transaction>2010/11/27 23:18:19.000.434,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PSFactory.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas</Transaction>
+    <Transaction>2010/11/28 09:39:58.000.146,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PSInstropection.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PSFactory.pas</Transaction>
+    <Transaction>2010/11/28 16:59:18.000.833,=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas</Transaction>
+    <Transaction>2010/11/28 16:59:35.000.606,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PSPrimitiveObject.pas</Transaction>
+    <Transaction>2010/11/28 21:32:09.000.101,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PSInstropection.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PSInstrospection.pas</Transaction>
+    <Transaction>2010/12/01 23:03:58.000.254,=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas</Transaction>
+    <Transaction>2010/12/01 23:04:08.000.635,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PSGateway.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas</Transaction>
+    <Transaction>2010/12/01 23:05:30.000.175,=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas</Transaction>
+    <Transaction>2010/12/01 23:05:38.000.764,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PSFilter.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas</Transaction>
+    <Transaction>2010/12/01 23:11:50.000.846,=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas</Transaction>
+    <Transaction>2010/12/01 23:12:02.000.111,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PSContext.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas</Transaction>
+    <Transaction>2010/12/01 23:27:16.000.207,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PSFilters.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PSFilter.pas</Transaction>
+    <Transaction>2010/12/01 23:38:48.000.984,=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas</Transaction>
+    <Transaction>2010/12/01 23:39:24.000.553,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PSRequestInfo.pas=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\Unit1.pas</Transaction>
+    <Transaction>2010/12/02 22:23:20.000.204,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\PSRequestInfo.pas=</Transaction>
+    <Transaction>2010/12/13 19:23:32.000.209,=xmlrtl.dcp</Transaction>
+    <Transaction>2010/12/20 22:27:22.000.525,=\\psf\Home\Dropbox\Projetos\Perseus\src\Unit1.pas</Transaction>
+    <Transaction>2010/12/20 22:27:36.000.535,\\psf\Home\Dropbox\Projetos\Perseus\src\Unit1.pas=\\psf\Home\Dropbox\Projetos\Perseus\src\PSASExceptions.pas</Transaction>
+  </Transactions>
+</BorlandProject>

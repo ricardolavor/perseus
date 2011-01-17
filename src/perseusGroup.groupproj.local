@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2010/10/17 15:44:25.000.716,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\perseusGroup1.groupproj=C:\Users\Ricardo\Documents\RAD Studio\Projects\ProjectGroup1.groupproj</Transaction>
+    <Transaction>2010/10/17 15:44:32.000.764,C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\perseusGroup.groupproj=C:\Users\Ricardo\Documents\My Dropbox\Projetos\Perseus\src\perseusGroup1.groupproj</Transaction>
+  </Transactions>
+	<Default.Personality>
+		<Projects ActiveProject="\\psf\Home\Dropbox\Projetos\Perseus\src\Test\perseusTests.dproj"/>
+	</Default.Personality>
+</BorlandProject>
