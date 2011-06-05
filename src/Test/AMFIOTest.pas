@@ -10,7 +10,6 @@ type
 
   TSerializationTest = class(TTestCase)
   strict private
-    FAMFSerializer: IAMFSerializer;
   public
     procedure SetUp; override;
     procedure TearDown; override;
@@ -30,7 +29,7 @@ type
 
   TAMFMessageTest = class(TTestCase)
   private
-    FMessage: TAMFInputMessage;
+    FMessage: TAMFMessage;
   protected
     procedure SetUp; override;
     procedure TearDown; override;
@@ -49,7 +48,6 @@ end;
 
 procedure TSerializationTest.TearDown;
 begin
-  FAMFSerializer := nil;
 end;
 
 { TDeserializationTest }
@@ -186,7 +184,7 @@ end;
 procedure TAMFMessageTest.SetUp;
 begin
   inherited;
-  FMessage := TAMFInputMessage.Create;
+  FMessage := TAMFMessage.Create;
 end;
 
 procedure TAMFMessageTest.TearDown;

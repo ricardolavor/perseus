@@ -34,10 +34,13 @@ type
     function GetResponseURI: string;
     function GetMethod: string;
     function GetContent: IAMFObject;
+    function GetResult: IAMFObject;
+    procedure SetResult(const AValue: IAMFObject);
     property TargetURI: string read GetTargetURI;
     property ResponseURI: string read GetResponseURI;
     property Method: string read GetMethod;
     property Content: IAMFObject read GetContent;
+    property Result: IAMFObject read GetResult write SetResult;
   end;
 
   TAMFBody = class(TInterfacedObject, IAMFBody)
@@ -46,6 +49,7 @@ type
     FMethod: string;
     FTargetURI: string;
     FContent: IAMFObject;
+    FResult: IAMFObject;
     procedure SetContent(const Value: IAMFObject);
     procedure SetMethod(const Value: string);
     procedure SetResponseURI(const Value: string);
@@ -54,11 +58,14 @@ type
     function GetMethod: string;
     function GetResponseURI: string;
     function GetTargetURI: string;
+    procedure SetResult(const Value: IAMFObject);
+    function GetResult: IAMFObject;
   public
     property TargetURI: string read GetTargetURI write SetTargetURI;
     property ResponseURI: string read GetResponseURI write SetResponseURI;
     property Method: string read GetMethod write SetMethod;
     property Content: IAMFObject read GetContent write SetContent;
+    property Result: IAMFObject read GetResult write SetResult;
   end;
 
 implementation
@@ -80,6 +87,11 @@ begin
   Result := FResponseURI;
 end;
 
+function TAMFBody.GetResult: IAMFObject;
+begin
+  Result := FResult;
+end;
+
 function TAMFBody.GetTargetURI: string;
 begin
   result := FTargetURI;
@@ -98,6 +110,11 @@ end;
 procedure TAMFBody.SetResponseURI(const Value: string);
 begin
   FResponseURI := Value;
+end;
+
+procedure TAMFBody.SetResult(const Value: IAMFObject);
+begin
+  FResult := Value;
 end;
 
 procedure TAMFBody.SetTargetURI(const Value: string);

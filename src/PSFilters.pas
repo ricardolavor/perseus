@@ -24,7 +24,8 @@ unit PSFilters;
 interface
 
 uses
-  Classes, SysUtils, PSContext, PSAMFIO, PSAMFMessage, Generics.Collections;
+  Classes, SysUtils, PSContext, PSAMFIO, PSAMFMessage, Generics.Collections,
+  PSCommonTypes;
 
 type
 
@@ -36,19 +37,23 @@ type
   TAMFDeserializerFilter = class(TInterfacedObject, IFilter)
   strict private
     FReader: TAMFReader;
-    procedure ReadHeaders(AMessage: TAMFInputMessage);
-    procedure ReadBodies(AMessage: TAMFInputMessage);
+    procedure ReadHeaders(AMessage: TAMFMessage);
+    procedure ReadBodies(AMessage: TAMFMessage);
   public
     procedure Run(AContext: TAMFContext);
   end;
 
   TAMFResponseGeneratorFilter = class(TInterfacedObject, IFilter)
   strict private
+    function NewGUID: string;
+    function GenerateAcknowledgeResult(const AClassName, AClientId, AMessageId: string): IAMFObject;
   public
     procedure Run(AContext: TAMFContext);
   end;
 
   TAMFSerializeFilter = class(TInterfacedObject, IFilter)
+  strict private
+    FWriter: TAMFWriter;
   public
     procedure Run(AContext: TAMFContext);
   end;
@@ -66,11 +71,11 @@ type
 implementation
 
 uses
-  PSCommonTypes, StrUtils, PSAMFBody;
+  StrUtils, PSAMFBody, PSPrimitiveObject, Windows;
 
 { TAMFDeserializeFilter }
 
-procedure TAMFDeserializerFilter.ReadBodies(AMessage: TAMFInputMessage);
+procedure TAMFDeserializerFilter.ReadBodies(AMessage: TAMFMessage);
 var
   I,
   BodyCount: Integer;
@@ -80,7 +85,7 @@ begin
     AMessage.AddBody(FReader.ReadBody);
 end;
 
-procedure TAMFDeserializerFilter.ReadHeaders(AMessage: TAMFInputMessage);
+procedure TAMFDeserializerFilter.ReadHeaders(AMessage: TAMFMessage);
 var
   I,
   HeaderCount: Integer;
@@ -93,12 +98,12 @@ end;
 procedure TAMFDeserializerFilter.Run(AContext: TAMFContext);
 var
   Version: UInt16;
-  AMFMessage: TAMFInputMessage;
+  AMFMessage: TAMFMessage;
 begin
   FReader := TAMFReader.Create(AContext.InputStream);
   try
     Version := FReader.ReadUInt16;
-    AMFMessage := TAMFInputMessage.Create;
+    AMFMessage := TAMFMessage.Create;
     try
       AMFMessage.Version := Version;
       ReadHeaders(AMFMessage);
@@ -107,7 +112,7 @@ begin
       FreeAndNil(AMFMessage);
       raise;
     end;
-    AContext.InputMessage := AMFMessage;
+    AContext.Message := AMFMessage;
   finally
     FreeAndNil(FReader);
   end;
@@ -137,6 +142,32 @@ end;
 
 { TAMFReponseGeneratorFilter }
 
+function TAMFResponseGeneratorFilter.GenerateAcknowledgeResult(const AClassName,
+  AClientId, AMessageId: string): IAMFObject;
+var
+  ASObject: TActionScriptObject;
+begin
+  ASObject := TActionScriptObject.Create(AClassName);
+  ASObject['clientId'] := TAMFObject.Create(TStringObject(IfThen(AClientId = '', NewGUID, AClientId)));
+  ASObject['messageId'] := TAMFObject.Create(TStringObject(NewGUID));
+  ASObject['destination'] := nil;
+  ASObject['body'] := nil;
+  ASObject['timeToLive'] := TAMFObject.Create(TIntegerObject.Create(0));
+  ASObject['timestamp'] := TAMFObject.Create(TIntegerObject.Create(GetTickCount));
+  ASObject['headers'] := TAMFObject.Create(THashObject.Create);
+  ASObject['correlationId'] := TAMFObject.Create(TStringObject(AMessageId));
+  Result := TAMFObject.Create(ASObject);
+end;
+
+function TAMFResponseGeneratorFilter.NewGUID: string;
+var
+  GUID: TGUID;
+begin
+  CreateGUID(GUID);
+  Result := GUIDToString(GUID);
+  Result := Copy(Result, 2, Length(Result) - 2);
+end;
+
 procedure TAMFResponseGeneratorFilter.Run(AContext: TAMFContext);
 var
   I: Integer;
@@ -145,11 +176,10 @@ var
   Content,
   Operation,
   ClientId: IAMFObject;
-  AckMessage: TAcknowledgeMessage;
 begin
-  for I := 0 to Pred(AContext.InputMessage.BodyCount) do
+  for I := 0 to Pred(AContext.Message.BodyCount) do
   begin
-    Body := AContext.InputMessage.Bodies[0];
+    Body := AContext.Message.Bodies[0];
     Content := Body.Content;
     if Content.Value is TList<IAMFObject> then
       Content := TList<IAMFObject>(Content.Value)[0];
@@ -169,14 +199,11 @@ begin
           if Assigned(Operation) and
             (Operation.Value.ToString = '5')  then
           begin
-            AckMessage := TAcknowledgeMessage.Create;
-            AckMessage.Version := AContext.InputMessage.Version;
             ClientId := ASObject['clientId'];
-            if Assigned(ClientId) then
-              AckMessage.ClientId := ClientId.Value.ToString;
-            AckMessage.CorrelationId := ASObject['messageId'].Value.ToString;
-            AckMessage.Confirm(Body.ResponseURI);
-            AContext.AddResponse(AckMessage);
+            Body.Result :=
+              GenerateAcknowledgeResult('flex.messaging.messages.CommandMessage',
+              IfThen(Assigned(ClientId), ClientId.Value.ToString),
+              ASObject['messageId'].Value.ToString);
           end;
           Exit;
         end;
@@ -189,7 +216,13 @@ end;
 
 procedure TAMFSerializeFilter.Run(AContext: TAMFContext);
 begin
+  FWriter := TAMFWriter.Create(AContext.OutputStream);
+  try
 
+    //FWriter.WriteAMFMessage(AContext.);
+  finally
+    FreeAndNil(FWriter);
+  end;
 end;
 
 end.

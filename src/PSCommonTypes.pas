@@ -75,10 +75,13 @@ type
     function ToString: string; override;
   end;
 
+  THashObject = class(TDictionary<string, IAMFObject>)
+  end;
+
   TActionScriptObject = class
   private
     FTypeName: string;
-    FProperties: TDictionary<string, IAMFObject>;
+    FProperties: THashObject;
     function GetProperties(const AName: string): IAMFObject;
     procedure SetProperties(const AName: string; const AValue: IAMFObject);
   public
@@ -103,7 +106,7 @@ end;
 procedure TActionScriptObject.AfterConstruction;
 begin
   inherited;
-  FProperties := TDictionary<string, IAMFObject>.Create;
+  FProperties := THashObject.Create;
 end;
 
 constructor TActionScriptObject.Create(const ATypeName: string);

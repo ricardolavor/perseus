@@ -31,17 +31,9 @@ type
 
   TAMFReader = class;
 
-  TAMFWriter = class
-  end;
-
-  IExternalizable = interface
-    ['{AC4F4C66-D1AB-4747-847C-2659AA2A4275}']
-    procedure ReadData(AReader: TAMFReader);
-    procedure WriteData(AWriter: TAMFWriter);
-  end;
-
-  IAMFSerializer = interface
-    ['{D8EBB32C-F57E-469E-9631-82909FE6BF25}']
+  TAMFWriter = class(TBinaryWriter)
+  public
+    procedure WriteAMFMessage(const AMessage: IAMFMessage);
   end;
 
   TAMF0TypeMarkers = class sealed
@@ -118,6 +110,8 @@ type
     procedure AfterConstruction; override;
     destructor Destroy; override;
   end;
+
+
 
 implementation
 
@@ -596,6 +590,13 @@ begin
   Result := TAMFObject.Create(Doc);
   if Trim(Content) <> '' then
     Doc.LoadFromXML(Content);
+end;
+
+{ TAMFWriter }
+
+procedure TAMFWriter.WriteAMFMessage(const AMessage: IAMFMessage);
+begin
+//
 end;
 
 end.

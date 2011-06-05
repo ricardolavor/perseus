@@ -31,20 +31,14 @@ type
   TAMFContext = class
   strict private
     FInputStream: TStream;
-    FInputMessage: IAMFInputMessage;
+    FMessage: IAMFMessage;
     FOutputStream: TStream;
-    FResponses: TList<IAMFResponse>;
-    procedure SetInputMessage(const Value: IAMFInputMessage);
+    procedure SetMessage(const Value: IAMFMessage);
     procedure SetOutputStream(const Value: TStream);
-    function GetResponse(AIndex: Integer): IAMFResponse;
-    function GetResponseCount: Integer;
   public
     constructor Create(AInputStream: TStream);
     destructor Destroy; override;
-    property InputMessage: IAMFInputMessage read FInputMessage write SetInputMessage;
-    property ResponseCount: Integer read GetResponseCount;
-    property Response[AIndex: Integer]: IAMFResponse read GetResponse;
-    procedure AddResponse(AResponse: IAMFResponse);
+    property Message: IAMFMessage read FMessage write SetMessage;
     property OutputStream: TStream read FOutputStream write SetOutputStream;
     property InputStream: TStream read FInputStream;
   end;
@@ -53,38 +47,21 @@ implementation
 
 { TAMFContext }
 
-procedure TAMFContext.AddResponse(AResponse: IAMFResponse);
-begin
-  FResponses.Add(AResponse);
-end;
-
 constructor TAMFContext.Create(AInputStream: TStream);
 begin
   FInputStream := AInputStream;
   OutputStream := TMemoryStream.Create;
-  FResponses := TList<IAMFResponse>.Create;
 end;
 
 destructor TAMFContext.Destroy;
 begin
   FreeAndNil(FOutputStream);
-  FreeAndNil(FResponses);
   inherited;
 end;
 
-function TAMFContext.GetResponse(AIndex: Integer): IAMFResponse;
+procedure TAMFContext.SetMessage(const Value: IAMFMessage);
 begin
-  Result := FResponses[AIndex];
-end;
-
-function TAMFContext.GetResponseCount: Integer;
-begin
-  Result := FResponses.Count;
-end;
-
-procedure TAMFContext.SetInputMessage(const Value: IAMFInputMessage);
-begin
-  FInputMessage := Value;
+  FMessage := Value;
 end;
 
 procedure TAMFContext.SetOutputStream(const Value: TStream);

@@ -28,8 +28,10 @@ uses
 
 type
 
-  IAMFSimpleMessage = interface
-    ['{7B50F20B-8AAC-4747-AAC9-9909E1C9FB73}']
+  IAMFMessage = interface
+    ['{45DCCD8E-550C-4D61-BF83-4D8D02B6400E}']
+    function GetBodies(AIndex: Integer): IAMFBody;
+    function GetBodyCount: Integer;
     function GetClientId: string;
     function GetDestination: string;
     function GetId: string;
@@ -46,30 +48,11 @@ type
     property TimeToLive: Integer read GetTimeToLive;
     property Headers[AIndex: Integer]: IAMFHeader read GetHeaders;
     property HeaderCount: Integer read GetHeaderCount;
-  end;
-
-  IAMFInputMessage = interface(IAMFSimpleMessage)
-    ['{45DCCD8E-550C-4D61-BF83-4D8D02B6400E}']
-    function GetBodies(AIndex: Integer): IAMFBody;
-    function GetBodyCount: Integer;
     property Bodies[AIndex: Integer]: IAMFBody read GetBodies;
     property BodyCount: Integer read GetBodyCount;
   end;
 
-  IAMFResponse = interface(IAMFSimpleMessage)
-    function GetResult: IAMFObject;
-    function GetCorrelationId: string;
-    function GetResponse: string;
-    procedure SetResult(AValue: IAMFObject);
-    procedure SetCorrelationId(const AValue: string);
-    procedure Confirm(const AResponseURI: string);
-    procedure Fail(const AResponseURI: string);
-    property Result: IAMFObject read GetResult write SetResult;
-    property CorrelationId: string read GetCorrelationId write SetCorrelationId;
-    property Response: string read GetResponse;
-  end;
-
-  TAMFSimpleMessage = class abstract(TInterfacedObject, IAMFSimpleMessage)
+  TAMFMessage = class abstract(TInterfacedObject, IAMFMessage)
   private
     FClientId: string;
     FDestination: string;
@@ -78,6 +61,9 @@ type
     FTimeToLive: Integer;
     FHeaders: TInterfaceList;
     FVersion: UInt16;
+    FBodies: TInterfaceList;
+    function GetBodies(AIndex: Integer): IAMFBody;
+    function GetBodyCount: Integer;
     function GetClientId: string;
     function GetDestination: string;
     function GetHeaders(AIndex: Integer): IAMFHeader;
@@ -105,239 +91,120 @@ type
     property Version: UInt16 read GetVersion write SetVersion;
     property Headers[AIndex: Integer]: IAMFHeader read GetHeaders;
     property HeaderCount: Integer read GetHeaderCount;
-  end;
-
-  TAMFInputMessage = class(TAMFSimpleMessage, IAMFInputMessage)
-  private
-    FBodies: TInterfaceList;
-    function GetBodies(AIndex: Integer): IAMFBody;
-    function GetBodyCount: Integer;
-  public
-    procedure AfterConstruction; override;
-    destructor Destroy; override;
     procedure AddBody(const ABody: IAMFBody);
     property Bodies[AIndex: Integer]: IAMFBody read GetBodies;
     property BodyCount: Integer read GetBodyCount;
   end;
-
-  TAMFResponse = class(TAMFSimpleMessage, IAMFResponse)
-  strict private
-    FResult: IAMFObject;
-    FCorrelationId: string;
-    FResponse: string;
-    function GetCorrelationId: string;
-    procedure SetResult(AValue: IAMFObject);
-    function GetResult: IAMFObject;
-    function GetResponse: string;
-    procedure SetCorrelationId(const AValue: string);
-  public
-    procedure AfterConstruction; override;
-    procedure Confirm(const AResponseURI: string);
-    procedure Fail(const AResponseURI: string);
-    property Response: string read GetResponse;
-    property Result: IAMFObject read GetResult write SetResult;
-    property CorrelationId: string read GetCorrelationId write SetCorrelationId;
-  end;
-
-  TAcknowledgeMessage = class(TAMFResponse)
-  strict protected
-    procedure SetClientId(const Value: string); override;
-  public
-    procedure AfterConstruction; override;
-  end;
-
 
 implementation
 
 uses
   Windows, StrUtils;
 
-function NewGUID: string;
-var
-  GUID: TGUID;
-begin
-  CreateGUID(GUID);
-  Result := GUIDToString(GUID);
-  Result := Copy(Result, 2, Length(Result) - 2);
-end;
+{ TAMFMessage }
 
-{ TAMFInputMessage }
-
-procedure TAMFInputMessage.AddBody(const ABody: IAMFBody);
+procedure TAMFMessage.AddBody(const ABody: IAMFBody);
 begin
   FBodies.Add(ABody);
 end;
 
-procedure TAMFInputMessage.AfterConstruction;
-begin
-  inherited;
-  FBodies := TInterfaceList.Create;
-end;
-
-destructor TAMFInputMessage.Destroy;
-begin
-  FreeAndNil(FBodies);
-  inherited;
-end;
-
-function TAMFInputMessage.GetBodies(AIndex: Integer): IAMFBody;
-begin
-  Result := IAMFBody(FBodies[AIndex]);
-end;
-
-function TAMFInputMessage.GetBodyCount: Integer;
-begin
-  Result := FBodies.Count;
-end;
-
-{ TAMFResponse }
-
-procedure TAMFResponse.AfterConstruction;
-begin
-  inherited;
-  TimeStamp := GetTickCount;
-  TimeToLive := 0;
-end;
-
-procedure TAMFResponse.Confirm(const AResponseURI: string);
-begin
-  FResponse := AResponseURI + '/onResult';
-end;
-
-procedure TAMFResponse.Fail(const AResponseURI: string);
-begin
-  FResponse := AResponseURI + '/onStatus';
-end;
-
-function TAMFResponse.GetCorrelationId: string;
-begin
-  Result := FCorrelationId;
-end;
-
-function TAMFResponse.GetResponse: string;
-begin
-  Result := FResponse;
-end;
-
-function TAMFResponse.GetResult: IAMFObject;
-begin
-  Result := FResult;
-end;
-
-procedure TAMFResponse.SetCorrelationId(const AValue: string);
-begin
-  FCorrelationId := AValue;
-end;
-
-procedure TAMFResponse.SetResult(AValue: IAMFObject);
-begin
-  FResult := AValue;
-end;
-
-{ TAMFSimpleMessage }
-
-procedure TAMFSimpleMessage.AddHeader(const AHeader: IAMFHeader);
+procedure TAMFMessage.AddHeader(const AHeader: IAMFHeader);
 begin
   FHeaders.Add(AHeader);
 end;
 
-procedure TAMFSimpleMessage.AfterConstruction;
+procedure TAMFMessage.AfterConstruction;
 begin
   inherited;
   FHeaders := TInterfaceList.Create;
+  FBodies := TInterfaceList.Create;
 end;
 
-destructor TAMFSimpleMessage.Destroy;
+destructor TAMFMessage.Destroy;
 begin
   FreeAndNil(FHeaders);
+  FreeAndNil(FBodies);
   inherited;
 end;
 
-function TAMFSimpleMessage.GetClientId: string;
+function TAMFMessage.GetBodies(AIndex: Integer): IAMFBody;
+begin
+  Result := IAMFBody(FBodies[AIndex]);
+end;
+
+function TAMFMessage.GetBodyCount: Integer;
+begin
+  Result := FBodies.Count;
+end;
+
+function TAMFMessage.GetClientId: string;
 begin
   Result := FClientId;
 end;
 
-function TAMFSimpleMessage.GetDestination: string;
+function TAMFMessage.GetDestination: string;
 begin
   Result := FDestination;
 end;
 
-function TAMFSimpleMessage.GetHeaderCount: Integer;
+function TAMFMessage.GetHeaderCount: Integer;
 begin
   Result := FHeaders.Count;
 end;
 
-function TAMFSimpleMessage.GetHeaders(AIndex: Integer): IAMFHeader;
+function TAMFMessage.GetHeaders(AIndex: Integer): IAMFHeader;
 begin
   Result := IAMFHeader(FHeaders[AIndex]);
 end;
 
-function TAMFSimpleMessage.GetId: string;
+function TAMFMessage.GetId: string;
 begin
   Result := FId;
 end;
 
-function TAMFSimpleMessage.GetTimeStamp: Integer;
+function TAMFMessage.GetTimeStamp: Integer;
 begin
   Result := FTimeStamp;
 end;
 
-function TAMFSimpleMessage.GetTimeToLive: Integer;
+function TAMFMessage.GetTimeToLive: Integer;
 begin
   Result := FTimeToLive;
 end;
 
-function TAMFSimpleMessage.GetVersion: UInt16;
+function TAMFMessage.GetVersion: UInt16;
 begin
   Result := FVersion;
 end;
 
-procedure TAMFSimpleMessage.SetClientId(const Value: string);
+procedure TAMFMessage.SetClientId(const Value: string);
 begin
   FClientId := Value;
 end;
 
-procedure TAMFSimpleMessage.SetDestination(const Value: string);
+procedure TAMFMessage.SetDestination(const Value: string);
 begin
   FDestination := Value;
 end;
 
-procedure TAMFSimpleMessage.SetId(const Value: string);
+procedure TAMFMessage.SetId(const Value: string);
 begin
   FId := Value;
 end;
 
-procedure TAMFSimpleMessage.SetTimeStamp(const Value: Integer);
+procedure TAMFMessage.SetTimeStamp(const Value: Integer);
 begin
   FTimeStamp := Value;
 end;
 
-procedure TAMFSimpleMessage.SetTimeToLive(const Value: Integer);
+procedure TAMFMessage.SetTimeToLive(const Value: Integer);
 begin
   FTimeToLive := Value;
 end;
 
-procedure TAMFSimpleMessage.SetVersion(const Value: UInt16);
+procedure TAMFMessage.SetVersion(const Value: UInt16);
 begin
   FVersion := Value;
-end;
-
-{ TAcknowledgeMessage }
-
-procedure TAcknowledgeMessage.AfterConstruction;
-begin
-  inherited;
-  Id := NewGUID;
-  ClientId := NewGUID;
-end;
-
-procedure TAcknowledgeMessage.SetClientId(const Value: string);
-begin
-  if Value = '' then
-    inherited SetClientId(NewGUID)
-  else
-    inherited SetClientId(Value);
 end;
 
 end.
