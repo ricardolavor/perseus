@@ -148,14 +148,14 @@ var
   ASObject: TActionScriptObject;
 begin
   ASObject := TActionScriptObject.Create(AClassName);
-  ASObject['clientId'] := TAMFObject.Create(TStringObject(IfThen(AClientId = '', NewGUID, AClientId)));
-  ASObject['messageId'] := TAMFObject.Create(TStringObject(NewGUID));
+  ASObject['clientId'] := TAMFObject.Create(TStringObject.Create(IfThen(AClientId = '', NewGUID, AClientId)));
+  ASObject['messageId'] := TAMFObject.Create(TStringObject.Create(NewGUID));
   ASObject['destination'] := nil;
   ASObject['body'] := nil;
   ASObject['timeToLive'] := TAMFObject.Create(TIntegerObject.Create(0));
   ASObject['timestamp'] := TAMFObject.Create(TIntegerObject.Create(GetTickCount));
   ASObject['headers'] := TAMFObject.Create(THashObject.Create);
-  ASObject['correlationId'] := TAMFObject.Create(TStringObject(AMessageId));
+  ASObject['correlationId'] := TAMFObject.Create(TStringObject.Create(AMessageId));
   Result := TAMFObject.Create(ASObject);
 end;
 
@@ -169,6 +169,9 @@ begin
 end;
 
 procedure TAMFResponseGeneratorFilter.Run(AContext: TAMFContext);
+const
+  REMOTING_MESSAGE_CLASS = 'flex.messaging.messages.RemotingMessage';
+  COMMAND_MESSAGE_CLASS = 'flex.messaging.messages.CommandMessage';
 var
   I: Integer;
   ASObject: TActionScriptObject;
@@ -187,8 +190,7 @@ begin
     begin
       ASObject := TActionScriptObject(Content.Value);
       case IndexText(ASObject.TypeName,
-         ['flex.messaging.messages.RemotingMessage',
-         'flex.messaging.messages.CommandMessage']) of
+         [REMOTING_MESSAGE_CLASS, COMMAND_MESSAGE_CLASS]) of
         0:
         begin
 
@@ -201,8 +203,8 @@ begin
           begin
             ClientId := ASObject['clientId'];
             Body.Result :=
-              GenerateAcknowledgeResult('flex.messaging.messages.CommandMessage',
-              IfThen(Assigned(ClientId), ClientId.Value.ToString),
+              GenerateAcknowledgeResult(COMMAND_MESSAGE_CLASS,
+              '',
               ASObject['messageId'].Value.ToString);
           end;
           Exit;
@@ -218,7 +220,6 @@ procedure TAMFSerializeFilter.Run(AContext: TAMFContext);
 begin
   FWriter := TAMFWriter.Create(AContext.OutputStream);
   try
-
     //FWriter.WriteAMFMessage(AContext.);
   finally
     FreeAndNil(FWriter);
